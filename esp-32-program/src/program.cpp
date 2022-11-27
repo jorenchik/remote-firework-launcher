@@ -41,6 +41,7 @@ void Device::connectToWifi()
     Serial.println(WiFi.localIP());
     status = DEVICE_STATUS_READY;
 }
+int Device::getStatus() {return status;}
 
 void Pin::enable() {
     status = PIN_STATUS_ENABLED;

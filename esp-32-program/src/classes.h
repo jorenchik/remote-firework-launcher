@@ -16,6 +16,7 @@ class Device
   std::vector<Pin> *getEnabledPins();
   std::vector<Pin> *getDisabledPins();
   std::vector<int> *getAvailablePins();
+  int getStatus();
 };
 
 class Pin
