@@ -5,7 +5,7 @@
 #define WIFI_PASSWORD ""
 #define WIFI_CHANNEL 6
 
-#define DEVICE_STATUS_NOT_CONNECTED 0
+#define DEVICE_STATUS_NOT_READY 0
 #define DEVICE_STATUS_READY 1
 
 #define PIN_STATUS_DISABLED 0
@@ -16,7 +16,7 @@
 #define DEVICE_WIFI_MODE_STATION 2
 
 Device::Device(int mode) {
-    status = DEVICE_STATUS_NOT_CONNECTED;
+    status = DEVICE_STATUS_NOT_READY;
     wifiMode = mode;
     if (mode != DEVICE_WIFI_MODE_SOFT_AP || mode != DEVICE_WIFI_MODE_SOFT_AP)
     {
@@ -39,6 +39,7 @@ void Device::connectToWifi()
     Serial.println(" Connected!");
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    status = DEVICE_STATUS_READY;
 }
 
 void Pin::enable() {
