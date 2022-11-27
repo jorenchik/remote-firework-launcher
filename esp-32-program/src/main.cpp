@@ -3,6 +3,8 @@
 #include <WebServer.h>
 #include <uri/UriBraces.h>
 
+#include "classes.h"
+
 #define WIFI_SSID "Wokwi-GUEST"
 #define WIFI_PASSWORD ""
 #define WIFI_CHANNEL 6
@@ -18,6 +20,7 @@
 #define DEVICE_WIFI_MODE_STATION 2
 
 WebServer server(80);
+Device *device;
 
 void connectToWifi()
 {
@@ -65,7 +68,8 @@ void handleNotFound() {
 void setup(void) {
   Serial.begin(115200);
 
-  connectToWifi();
+  device = new Device(DEVICE_WIFI_MODE_STATION);
+  device->connectToWifi();
 
   server.on(UriBraces("/status/device"), handleGetDeviceStatus);
   server.on(UriBraces("/status/pin/{}"), handleGetPinStatus);
