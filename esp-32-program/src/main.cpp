@@ -37,7 +37,20 @@ void connectToWifi()
 }
 
 void handleGetDeviceStatus() {
-  server.send(200, "text/plain", "{\"status\": \"ready\", \"pinsAvailable\": [TK]}");
+  String status;
+  switch(device->getStatus())
+  {
+    case DEVICE_STATUS_NOT_READY:
+      status = "not-ready";
+      break;
+    case DEVICE_STATUS_READY:
+      status = "ready";
+      break;
+    default:
+      status = "not-ready";
+      break;
+  }
+  server.send(200, "text/plain", "{\"status\":\"" + status + "\"}");
 }
 
 void handleGetPinStatus() {
