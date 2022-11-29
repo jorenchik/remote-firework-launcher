@@ -32,7 +32,7 @@ void handleNotFound();
 void setup(void) {
   Serial.begin(115200);
   device = new Device(DEVICE_WIFI_MODE_STATION);
-  device->connectToWifi();
+  device->connectToWifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
 
   server.on(UriBraces("/status/device"), handleGetDeviceStatus);
   server.on(UriBraces("/status/pin/{}"), handleGetPinStatus);

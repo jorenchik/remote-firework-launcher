@@ -30,9 +30,9 @@ Device::Device(int mode) {
 Device::~Device() {}
 std::vector<Pin*> *Device::getPins() {return &pins;}
 std::vector<int> *Device::getAvailablePinNumbers() {return &availablePinNumbers;}
-void Device::connectToWifi()
+void Device::connectToWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
 {
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
+    WiFi.begin(wifiSsid,wifiPassword,wifiChannel);
     Serial.print("Connecting to WiFi ");
     Serial.print(WIFI_SSID);
     while (WiFi.status() != WL_CONNECTED) {

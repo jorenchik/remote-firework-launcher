@@ -14,7 +14,7 @@ class Device
   public:
   Device(int mode);
   ~Device();
-  void connectToWifi();
+  void connectToWifi(char *wifiSsid, char *wifiPassword, int wifiChannel);
   int getStatus();
   void initPins(); // Creates pin object for every available pinNumber
   int getFireTime();
