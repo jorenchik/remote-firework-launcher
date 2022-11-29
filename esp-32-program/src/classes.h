@@ -5,19 +5,18 @@ class Device
 {
   int status;
   int wifiMode;
-  std::vector<Pin> enabledPins;
-  std::vector<Pin> disabledPins;
-  std::vector<int> availablePins{13,16,17,18,19,21,22,23,25,26,27,32,33};
+  std::vector<Pin> pins;
+  std::vector<int> availablePinNumbers{13,16,17,18,19,21,22,23,25,26,27,32,33};
 
   public:
   Device(int mode);
   ~Device();
   void connectToWifi();
-  std::vector<Pin> *getEnabledPins();
-  std::vector<Pin> *getDisabledPins();
-  std::vector<int> *getAvailablePins();
   int getStatus();
+  std::vector<Pin> *getPins();
+  std::vector<int> *getAvailablePinNumbers();
 };
+
 
 class Pin
 {
@@ -28,9 +27,9 @@ class Pin
   public:
   Pin(int pinNum, Device *device);
   ~Pin();
+  int getStatus();
   void enable();
   void disable();
   void fire();
-  int getStatus();
   Device *getDevice();
 };

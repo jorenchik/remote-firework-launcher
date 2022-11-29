@@ -24,9 +24,8 @@ Device::Device(int mode) {
     }
 }
 Device::~Device() {}
-std::vector<Pin> *Device::getEnabledPins() {return &enabledPins;}
-std::vector<Pin> *Device::getDisabledPins() {return &disabledPins;}
-std::vector<int> *Device::getAvailablePins() {return &availablePins;}
+std::vector<Pin> *Device::getPins() {return &pins;}
+std::vector<int> *Device::getAvailablePinNumbers() {return &availablePinNumbers;}
 void Device::connectToWifi()
 {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
@@ -42,6 +41,7 @@ void Device::connectToWifi()
     status = DEVICE_STATUS_READY;
 }
 int Device::getStatus() {return status;}
+
 
 void Pin::enable() {
     status = PIN_STATUS_ENABLED;
