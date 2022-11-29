@@ -62,3 +62,7 @@ Pin::Pin(int pinNum, Device *device) {
 }
 Pin::~Pin() {
 }
+
+int Pin::getPinNumber() {
+    return pinNumber;
+}

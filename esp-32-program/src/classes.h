@@ -27,9 +27,10 @@ class Pin
   public:
   Pin(int pinNum, Device *device);
   ~Pin();
-  int getStatus();
   void enable();
   void disable();
   void fire();
+  int getStatus();
+  int getPinNumber();
   Device *getDevice();
 };
