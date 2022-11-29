@@ -22,6 +22,7 @@ Device::Device(int mode) {
     status = DEVICE_STATUS_NOT_READY;
     fireTime = DEVICE_FIRETIME;
     wifiMode = mode;
+    this->initPins();
 }
 Device::~Device() {}
 std::vector<Pin*> *Device::getPins() {return &pins;}
@@ -54,7 +55,6 @@ void Device::setupWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
         Serial.println("Halting the setup...");
         exit(0);  
     }
-    this->initPins();
     status = DEVICE_STATUS_READY;
 }
 int Device::getStatus() {return status;}
