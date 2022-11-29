@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#include <WebServer.h>
 #include <vector>
 
 class Pin;

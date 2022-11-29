@@ -22,20 +22,6 @@
 WebServer server(80);
 Device *device;
 
-void connectToWifi()
-{
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
-  Serial.print("Connecting to WiFi ");
-  Serial.print(WIFI_SSID);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
-    Serial.print(".");
-  }
-  Serial.println(" Connected!");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-}
-
 void handleGetDeviceStatus() {
   server.send(200, "text/plain", "{\"status\":STATUS\"}");
   return;
