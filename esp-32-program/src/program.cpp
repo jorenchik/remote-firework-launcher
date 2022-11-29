@@ -51,6 +51,7 @@ void Device::initPins() {
     while(pinNumPtr != availablePinNumbers.end())
     {
         Pin *newPinPtr = new Pin(*pinNumPtr, this);
+        pinMode(*pinNumPtr, OUTPUT);
         this->pins.push_back(newPinPtr);
         pinNumPtr++;
     }
