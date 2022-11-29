@@ -1,5 +1,6 @@
 #include "classes.h"
 #include <WiFi.h>
+#include <vector>
 
 #define WIFI_SSID "Wokwi-GUEST"
 #define WIFI_PASSWORD ""
@@ -24,7 +25,7 @@ Device::Device(int mode) {
     }
 }
 Device::~Device() {}
-std::vector<Pin> *Device::getPins() {return &pins;}
+std::vector<Pin*> *Device::getPins() {return &pins;}
 std::vector<int> *Device::getAvailablePinNumbers() {return &availablePinNumbers;}
 void Device::connectToWifi()
 {
@@ -38,9 +39,19 @@ void Device::connectToWifi()
     Serial.println(" Connected!");
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    this->initPins();
     status = DEVICE_STATUS_READY;
 }
 int Device::getStatus() {return status;}
+void Device::initPins() {
+    std::vector<int>::iterator pinNumPtr = availablePinNumbers.begin();
+    while(pinNumPtr != availablePinNumbers.end())
+    {
+        Pin *newPinPtr = new Pin(*pinNumPtr, this);
+        this->pins.push_back(newPinPtr);
+        pinNumPtr++;
+    }
+}
 
 
 void Pin::enable() {

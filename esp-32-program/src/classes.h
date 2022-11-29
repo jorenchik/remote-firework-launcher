@@ -5,7 +5,7 @@ class Device
 {
   int status;
   int wifiMode;
-  std::vector<Pin> pins;
+  std::vector<Pin*> pins;
   std::vector<int> availablePinNumbers{13,16,17,18,19,21,22,23,25,26,27,32,33};
 
   public:
@@ -13,7 +13,8 @@ class Device
   ~Device();
   void connectToWifi();
   int getStatus();
-  std::vector<Pin> *getPins();
+  void initPins();
+  std::vector<Pin*> *getPins();
   std::vector<int> *getAvailablePinNumbers();
 };
 
