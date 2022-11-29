@@ -22,6 +22,33 @@
 WebServer server(80);
 Device *device;
 
+void handleGetDeviceStatus();
+void handleGetPinStatus();
+void handleGetPinsStatus();
+void handlePinEnable();
+void handleResetDeviceConfig();
+void handleNotFound();
+
+void setup(void) {
+  Serial.begin(115200);
+  device = new Device(DEVICE_WIFI_MODE_STATION);
+  device->connectToWifi();
+
+  server.on(UriBraces("/status/device"), handleGetDeviceStatus);
+  server.on(UriBraces("/status/pin/{}"), handleGetPinStatus);
+  server.on(UriBraces("/status/pins"), handleGetPinsStatus);
+  server.on(UriBraces("/set/device/defaults"), handleResetDeviceConfig);
+  server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
+  server.onNotFound(handleNotFound);
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void loop(void) {
+  server.handleClient();
+  delay(2);
+}
+
 void handleGetDeviceStatus() {
   server.send(200, "text/plain", "{\"status\":STATUS\"}");
   return;
@@ -50,26 +77,4 @@ void handleResetDeviceConfig() {
 
 void handleNotFound() {
   server.send(404, "text/plain", "{\"message\": \"The route hasn't been found\"}");
-}
-
-void setup(void) {
-  Serial.begin(115200);
-
-  device = new Device(DEVICE_WIFI_MODE_STATION);
-  device->connectToWifi();
-
-  server.on(UriBraces("/status/device"), handleGetDeviceStatus);
-  server.on(UriBraces("/status/pin/{}"), handleGetPinStatus);
-  server.on(UriBraces("/status/pins"), handleGetPinsStatus);
-  server.on(UriBraces("/set/device/defaults"), handleResetDeviceConfig);
-  server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
-  server.onNotFound(handleNotFound);
-
-  server.begin();
-  Serial.println("HTTP server started");
-}
-
-void loop(void) {
-  server.handleClient();
-  delay(2);
 }
