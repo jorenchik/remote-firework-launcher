@@ -85,10 +85,10 @@ void Pin::fire() {
 }
 int Pin::getStatus() {return status;}
 Device *Pin::getDevice() {return device;}
-Pin::Pin(int pinNum, Device *device) {
+Pin::Pin(int pinNum, Device *dev) {
     status = PIN_STATUS_DISABLED;
     pinNumber = pinNum;
-    device = device;
+    device = dev;
 }
 Pin::~Pin() {
 }
