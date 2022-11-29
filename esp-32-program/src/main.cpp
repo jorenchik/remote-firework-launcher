@@ -50,7 +50,22 @@ void loop(void) {
 }
 
 void handleGetDeviceStatus() {
-  server.send(200, "text/plain", "{\"status\":STATUS\"}");
+  int deviceStatus = device->getStatus();
+  String deviceStatusStr;
+  switch(deviceStatus)
+  {
+    case DEVICE_STATUS_NOT_READY:
+      deviceStatusStr = "not-ready";
+      break;
+    case DEVICE_STATUS_READY:
+      deviceStatusStr = "ready";
+      break;
+    default:
+      server.send(500, "text/plain", "{\"message\":\"Internal server error.\"}");
+      return;
+      break;
+  }
+  server.send(200, "text/plain", "{\"status\":\"" + deviceStatusStr + "\"}");
   return;
 }
 
