@@ -46,6 +46,7 @@ void Device::connectToWifi()
     status = DEVICE_STATUS_READY;
 }
 int Device::getStatus() {return status;}
+int Device::getFireTime() {return fireTime;}
 void Device::initPins() {
     std::vector<int>::iterator pinNumPtr = availablePinNumbers.begin();
     while(pinNumPtr != availablePinNumbers.end())

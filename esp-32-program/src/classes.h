@@ -17,6 +17,7 @@ class Device
   void connectToWifi();
   int getStatus();
   void initPins(); // Creates pin object for every available pinNumber
+  int getFireTime();
   std::vector<Pin*> *getPins();
   std::vector<int> *getAvailablePinNumbers();
 };
