@@ -82,8 +82,46 @@ void handleGetDeviceStatus() {
 }
 
 void handleGetPinStatus() {
-  String pinNum = server.pathArg(0);
-  server.send(200, "text/plain", "{\"pinNumber\":" + pinNum + ",\"pinStatus:" + "\"STATUS\"}");
+  String pinNumberStr = server.pathArg(0), pinStatusStr;
+  int pinNumber, pinStatus;
+  try
+  {
+    pinNumber = pinNumberStr.toInt();
+  }
+  catch (std::exception e) 
+  {
+    sendInvalidArguments();
+    return;
+  }
+  if(!pinNumber)
+  {
+    sendInvalidArguments();
+    return;
+  }
+  Pin *pin = device->getPin(pinNumber);
+  if (!pin)
+  {
+    sendItemNotFound();
+    return;
+  }
+  pinStatus = pin->getStatus();
+  switch(pinStatus)
+  {
+    case PIN_STATUS_DISABLED:
+      pinStatusStr = "disabled";
+      break;
+    case PIN_STATUS_ENABLED:
+      pinStatusStr = "enabled";
+      break;
+    case PIN_STATUS_FIRED:
+      pinStatusStr = "fired";
+      break;
+    default:
+      sendInternalServer();
+      return;
+      break;
+  }
+  server.send(200, "text/plain", "{\"pinNumber\":" + pinNumberStr + ",\"pinStatus:" + "\"" + pinStatusStr + "\"}");
 }
 
 void handleGetPinsStatus() {
