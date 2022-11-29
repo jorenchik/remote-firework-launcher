@@ -56,7 +56,9 @@ void Device::initPins() {
 
 void Pin::enable() {
     status = PIN_STATUS_ENABLED;
-    // Pin.enableOnDevice...    
+}
+void Pin::disable() {
+    status = PIN_STATUS_DISABLED;
 }
 void Pin::fire() {
     // if enabled if not fired....
