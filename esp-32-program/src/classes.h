@@ -7,6 +7,7 @@ class Device
 {
   int status;
   int wifiMode;
+  int fireTime;
   std::vector<Pin*> pins; // Active/inactive pins on the device
   std::vector<int> availablePinNumbers{13,16,17,18,19,21,22,23,25,26,27,32,33}; // Pin numbers that will be initialized along the device
 

@@ -16,8 +16,11 @@
 #define DEVICE_WIFI_MODE_SOFT_AP 1
 #define DEVICE_WIFI_MODE_STATION 2
 
+#define DEVICE_FIRETIME 2000
+
 Device::Device(int mode) {
     status = DEVICE_STATUS_NOT_READY;
+    fireTime = DEVICE_FIRETIME;
     wifiMode = mode;
     if (mode != DEVICE_WIFI_MODE_SOFT_AP || mode != DEVICE_WIFI_MODE_SOFT_AP)
     {
