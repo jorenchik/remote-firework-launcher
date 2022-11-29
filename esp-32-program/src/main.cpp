@@ -48,6 +48,18 @@ void loop(void) {
   server.handleClient();
   delay(2);
 }
+ 
+void sendInvalidArguments() {
+  server.send(400, "text/plain", "{\"message\":\"Invalid arguments.\"}");
+}
+
+void sendItemNotFound() {
+  server.send(404, "text/plain", "{\"message\": \"The requested item hasn't been found.\"}");
+}
+
+void sendInternalServer() {
+  server.send(500, "text/plain", "{\"message\":\"Internal server error.\"}");
+}
 
 void handleGetDeviceStatus() {
   int deviceStatus = device->getStatus();
