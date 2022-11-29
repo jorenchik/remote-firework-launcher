@@ -69,6 +69,20 @@ void Device::initPins() {
         pinNumPtr++;
     }
 }
+Pin *Device::getPin(int pinNumber)
+{
+    std::vector<Pin*>::iterator iter = pins.begin();
+    Pin *foundPin;
+    while(iter != pins.end())
+    {
+        if ((*iter)->getPinNumber() == pinNumber)
+        {
+            return (*iter);
+        }
+        iter++;
+    }
+    return NULL;
+}
 
 
 void Pin::enable() {
