@@ -30,18 +30,34 @@ Device::Device(int mode) {
 Device::~Device() {}
 std::vector<Pin*> *Device::getPins() {return &pins;}
 std::vector<int> *Device::getAvailablePinNumbers() {return &availablePinNumbers;}
-void Device::connectToWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
+void Device::setupWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
 {
-    WiFi.begin(wifiSsid,wifiPassword,wifiChannel);
-    Serial.print("Connecting to WiFi ");
-    Serial.print(WIFI_SSID);
-    while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
-    Serial.print(".");
+    if (wifiMode == DEVICE_WIFI_MODE_SOFT_AP)
+    {
+        Serial.print("Setting AP (Access Point)…");
+        WiFi.softAP(wifiSsid, wifiPassword, wifiChannel);
+        IPAddress IP = WiFi.softAPIP();
+        Serial.print("AP IP address: ");
+        Serial.println(IP);
     }
-    Serial.println(" Connected!");
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
+    else if (wifiMode == DEVICE_WIFI_MODE_STATION)
+    {
+        WiFi.begin(wifiSsid,wifiPassword,wifiChannel);
+        Serial.print("Connecting to WiFi ");
+        Serial.print(WIFI_SSID);
+        while (WiFi.status() != WL_CONNECTED) {
+        delay(100);
+        Serial.print(".");
+        }
+        Serial.println(" Connected!");
+        Serial.print("IP address: ");
+        Serial.println(WiFi.localIP());
+    } else
+    {
+        Serial.println("Failed to setup WiFi: invalid WiFi mode.");
+        Serial.println("Halting the setup...");
+        exit(0);  
+    }
     this->initPins();
     status = DEVICE_STATUS_READY;
 }
