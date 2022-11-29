@@ -78,9 +78,26 @@ void Pin::disable() {
     status = PIN_STATUS_DISABLED;
 }
 void Pin::fire() {
-    // if enabled if not fired....
-    String log = "Pin " + pinNumber;
-    Serial.println(log);
+    if(status == PIN_STATUS_DISABLED)
+    {
+        Serial.println("Cannot fire disabled pin...");
+        return;
+    }
+    if(status != PIN_STATUS_ENABLED)
+    {
+        Serial.println("Pin has already been fired...");
+        return;
+    }
+    if(status != PIN_STATUS_ENABLED)
+    {
+        Serial.println("Invalid pin status - cannot fire...");
+        return;
+    }
+    int fireTime = device->getFireTime();
+    if(!fireTime) return;
+    digitalWrite(pinNumber, 1);
+    delay(fireTime);
+    digitalWrite(pinNumber, 0);
     status = PIN_STATUS_FIRED;
 }
 int Pin::getStatus() {return status;}
