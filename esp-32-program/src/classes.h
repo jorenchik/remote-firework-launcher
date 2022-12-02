@@ -27,7 +27,7 @@ class Device
 class Pin
 {
   int status;
-  int pinNumber;
+  int number;
   Device *device;
   
   public:

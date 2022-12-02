@@ -109,21 +109,21 @@ void Pin::fire() {
     }
     int fireTime = device->getFireTime();
     if(!fireTime) return;
-    digitalWrite(pinNumber, 1);
+    digitalWrite(number, 1);
     delay(fireTime);
-    digitalWrite(pinNumber, 0);
+    digitalWrite(number, 0);
     status = PIN_STATUS_FIRED;
 }
 int Pin::getStatus() {return status;}
 Device *Pin::getDevice() {return device;}
 Pin::Pin(int pinNum, Device *dev) {
     status = PIN_STATUS_DISABLED;
-    pinNumber = pinNum;
+    number = pinNum;
     device = dev;
 }
 Pin::~Pin() {
 }
 
 int Pin::getNumber() {
-    return pinNumber;
+    return number;
 }
