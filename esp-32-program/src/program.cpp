@@ -75,7 +75,7 @@ Pin *Device::getPin(int pinNumber)
     Pin *foundPin;
     while(iter != pins.end())
     {
-        if ((*iter)->getPinNumber() == pinNumber)
+        if ((*iter)->getNumber() == pinNumber)
         {
             return (*iter);
         }
@@ -124,6 +124,6 @@ Pin::Pin(int pinNum, Device *dev) {
 Pin::~Pin() {
 }
 
-int Pin::getPinNumber() {
+int Pin::getNumber() {
     return pinNumber;
 }

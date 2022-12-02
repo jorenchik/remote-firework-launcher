@@ -37,6 +37,6 @@ class Pin
   void disable(); // Makes the pin unavailable for it to be fired
   void fire(); 
   int getStatus();
-  int getPinNumber();
+  int getNumber();
   Device *getDevice();
 };
