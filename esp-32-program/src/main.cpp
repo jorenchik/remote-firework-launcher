@@ -57,7 +57,7 @@ void sendItemNotFound() {
   server.send(404, "text/plain", "{\"message\": \"The requested item hasn't been found.\"}");
 }
 
-void sendInternalServer() {
+void sendInternalServerError() {
   server.send(500, "text/plain", "{\"message\":\"Internal server error.\"}");
 }
 
@@ -117,7 +117,7 @@ void handleGetPinStatus() {
       pinStatusStr = "fired";
       break;
     default:
-      sendInternalServer();
+      sendInternalServerError();
       return;
       break;
   }
