@@ -142,9 +142,17 @@ void handleGetPinsStatus() {
 }
 
 void handlePinEnable() {
-  String pinNum = server.pathArg(0);
-  // getPinStatus(pinNum);
-  server.send(200, "text/plain", "Pin status of " + pinNum + " goes here...");
+  String pinNumberStr = server.pathArg(0), response;
+  Pin *pin;
+  pin = getPinByNumber(pinNumberStr);
+  if(!pin)
+  {
+    return;
+  }
+  pin->enable();
+  pin->getStatusString(&response);
+  server.send(200, "text/plain", response);
+}
 }
 
 void handleResetDeviceConfig() {
