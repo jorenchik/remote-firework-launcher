@@ -28,6 +28,7 @@ void handleGetPinsStatus();
 void handlePinEnable();
 void handleResetDeviceConfig();
 void handleNotFound();
+Pin *getPinByNumber(String pinNumberStr);
 
 void setup(void) {
   Serial.begin(115200);
@@ -61,6 +62,32 @@ void sendInternalServerError() {
   server.send(500, "text/plain", "{\"message\":\"Internal server error.\"}");
 }
 
+Pin *getPinByNumber(String pinNumberStr)
+{
+  int pinNumber;
+  try
+  {
+    pinNumber = pinNumberStr.toInt();
+  }
+  catch (std::exception e) 
+  {
+    sendInvalidArguments();
+    return NULL;
+  }
+  if(!pinNumber)
+  {
+    sendInvalidArguments();
+    return NULL;
+  }
+  Pin *pin = device->getPin(pinNumber);
+  if (!pin)
+  {
+    sendItemNotFound();
+    return NULL;
+  }
+  return pin;
+}
+
 void handleGetDeviceStatus() {
   int deviceStatus = device->getStatus();
   String deviceStatusStr;
@@ -73,55 +100,12 @@ void handleGetDeviceStatus() {
       deviceStatusStr = "ready";
       break;
     default:
-      server.send(500, "text/plain", "{\"message\":\"Internal server error.\"}");
       return;
       break;
   }
   server.send(200, "text/plain", "{\"status\":\"" + deviceStatusStr + "\"}");
   return;
 }
-
-void handleGetPinStatus() {
-  String pinNumberStr = server.pathArg(0), pinStatusStr;
-  int pinNumber, pinStatus;
-  try
-  {
-    pinNumber = pinNumberStr.toInt();
-  }
-  catch (std::exception e) 
-  {
-    sendInvalidArguments();
-    return;
-  }
-  if(!pinNumber)
-  {
-    sendInvalidArguments();
-    return;
-  }
-  Pin *pin = device->getPin(pinNumber);
-  if (!pin)
-  {
-    sendItemNotFound();
-    return;
-  }
-  pinStatus = pin->getStatus();
-  switch(pinStatus)
-  {
-    case PIN_STATUS_DISABLED:
-      pinStatusStr = "disabled";
-      break;
-    case PIN_STATUS_ENABLED:
-      pinStatusStr = "enabled";
-      break;
-    case PIN_STATUS_FIRED:
-      pinStatusStr = "fired";
-      break;
-    default:
-      sendInternalServerError();
-      return;
-      break;
-  }
-  server.send(200, "text/plain", "{\"pinNumber\":" + pinNumberStr + ",\"pinStatus:" + "\"" + pinStatusStr + "\"}");
 }
 
 void handleGetPinsStatus() {
