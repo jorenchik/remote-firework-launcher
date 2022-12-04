@@ -36,10 +36,10 @@ void setup(void) {
   device = new Device(DEVICE_WIFI_MODE_STATION);
   device->setupWifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
 
-  server.on(UriBraces("/status/device"), handleGetDeviceStatus);
-  server.on(UriBraces("/status/pin/{}"), handleGetPinStatus);
-  server.on(UriBraces("/status/pins"), handleGetPinsStatus);
-  server.on(UriBraces("/set/device/defaults"), handleResetDeviceConfig);
+  server.on(UriBraces("/device/status"), handleGetDeviceStatus);
+  server.on(UriBraces("/pin/status/{}"), handleGetPinStatus);
+  server.on(UriBraces("/device/pins/status"), handleGetPinsStatus);
+  server.on(UriBraces("/device/set-defaults"), handleResetDeviceConfig);
   server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
   server.on(UriBraces("/pin/disable/{}"), handlePinDisable);
   server.onNotFound(handleNotFound);
