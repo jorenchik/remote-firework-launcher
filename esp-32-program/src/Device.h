@@ -1,5 +1,3 @@
-#include <Arduino.h>
-#include <WebServer.h>
 #include <vector>
 
 class Pin;
@@ -22,23 +20,4 @@ class Device
   Pin *getPin(int pinNumber); // Gets a pin pointer by the pinNumber
   std::vector<Pin*> *getPins();
   std::vector<int> *getAvailablePinNumbers();
-};
-
-
-class Pin
-{
-  int status;
-  int number;
-  Device *device;
-  
-  public:
-  Pin(int pinNumber, Device *device);
-  ~Pin();
-  void enable(); // Makes the pin available for it to be fired
-  void disable(); // Makes the pin unavailable for it to be fired
-  void fire(); 
-  int getStatus();
-  void getStatusString(String *result);
-  int getNumber();
-  Device *getDevice();
 };

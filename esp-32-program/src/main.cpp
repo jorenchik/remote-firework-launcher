@@ -2,19 +2,12 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <uri/UriBraces.h>
-
-#include "classes.h"
+#include "Device.h"
+#include "Pin.h"
 
 #define WIFI_SSID "Wokwi-GUEST"
 #define WIFI_PASSWORD ""
 #define WIFI_CHANNEL 6
-
-#define DEVICE_STATUS_NOT_READY 0
-#define DEVICE_STATUS_READY 1
-
-#define PIN_STATUS_DISABLED 0
-#define PIN_STATUS_ENABLED 1
-#define PIN_STATUS_FIRED 2
 
 #define DEVICE_WIFI_MODE_SOFT_AP 1
 #define DEVICE_WIFI_MODE_STATION 2

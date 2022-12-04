@@ -1,17 +1,9 @@
-#include "classes.h"
 #include <WiFi.h>
 #include <vector>
-
-#define WIFI_SSID "Wokwi-GUEST"
-#define WIFI_PASSWORD ""
-#define WIFI_CHANNEL 6
+#include "Device.h"
 
 #define DEVICE_STATUS_NOT_READY 0
 #define DEVICE_STATUS_READY 1
-
-#define PIN_STATUS_DISABLED 0
-#define PIN_STATUS_ENABLED 1
-#define PIN_STATUS_FIRED 2
 
 #define DEVICE_WIFI_MODE_SOFT_AP 1
 #define DEVICE_WIFI_MODE_STATION 2
@@ -41,7 +33,7 @@ void Device::setupWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
     {
         WiFi.begin(wifiSsid,wifiPassword,wifiChannel);
         Serial.print("Connecting to WiFi ");
-        Serial.print(WIFI_SSID);
+        Serial.print(wifiSsid);
         while (WiFi.status() != WL_CONNECTED) {
         delay(100);
         Serial.print(".");
@@ -101,73 +93,4 @@ void Device::getStatusString(String *result)
             break;
     }
     (*result).concat("\"}");
-}
-
-
-void Pin::enable() {
-    status = PIN_STATUS_ENABLED;
-}
-void Pin::disable() {
-    status = PIN_STATUS_DISABLED;
-}
-void Pin::fire() {
-    if(status == PIN_STATUS_DISABLED)
-    {
-        Serial.println("Cannot fire disabled pin...");
-        return;
-    }
-    if(status != PIN_STATUS_ENABLED)
-    {
-        Serial.println("Pin has already been fired...");
-        return;
-    }
-    if(status != PIN_STATUS_ENABLED)
-    {
-        Serial.println("Invalid pin status - cannot fire...");
-        return;
-    }
-    int fireTime = device->getFireTime();
-    if(!fireTime) return;
-    digitalWrite(number, 1);
-    delay(fireTime);
-    digitalWrite(number, 0);
-    status = PIN_STATUS_FIRED;
-}
-int Pin::getStatus() {return status;}
-
-void Pin::getStatusString(String *result) {
-    *result = "";
-    (*result).concat("{\"pinNumber\":\"");
-    (*result).concat(String(number));
-    (*result).concat("\",\"status\":\"");
-    switch(status)
-    {
-        case PIN_STATUS_DISABLED:
-            (*result).concat("disabled");
-            break;
-        case PIN_STATUS_ENABLED:
-            (*result).concat("enabled");
-            break;
-        case PIN_STATUS_FIRED:
-            (*result).concat("fired");
-            break;
-        default:
-            *result = ""; 
-            return;
-            break;
-    }
-    (*result).concat("\"}");
-}
-
-Device *Pin::getDevice() {return device;}
-Pin::Pin(int pinNumber, Device *dev) {
-    status = PIN_STATUS_DISABLED;
-    number = pinNumber;
-    device = dev;
-}
-Pin::~Pin() {
-}
-
-int Pin::getNumber() {
-    return number;
 }
