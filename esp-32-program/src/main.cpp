@@ -125,6 +125,11 @@ void handleGetPinsStatus() {
   {
     String pinStatusString = "";
     (*devicePinsIterator)->getStatusString(&pinStatusString);
+    if(pinStatusString == "")
+    {
+      sendInternalServerError();
+      return;
+    }
     if(devicePinsIterator - devicePins->begin() != 0)
     {
       response.concat(",");
