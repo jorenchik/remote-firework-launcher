@@ -91,21 +91,14 @@ Pin *getPinByNumber(String pinNumberStr)
 }
 
 void handleGetDeviceStatus() {
-  int deviceStatus = device->getStatus();
-  String deviceStatusStr;
-  switch(deviceStatus)
+  String response;
+  device->getStatusString(&response);
+  if(response == "")
   {
-    case DEVICE_STATUS_NOT_READY:
-      deviceStatusStr = "not-ready";
-      break;
-    case DEVICE_STATUS_READY:
-      deviceStatusStr = "ready";
-      break;
-    default:
-      return;
-      break;
+    sendInternalServerError();
+    return;
   }
-  server.send(200, "text/plain", "{\"status\":\"" + deviceStatusStr + "\"}");
+  server.send(200, "text/plain", response);
   return;
 }
 
