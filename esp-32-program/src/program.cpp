@@ -83,6 +83,25 @@ Pin *Device::getPin(int pinNumber)
     }
     return NULL;
 }
+void Device::getStatusString(String *result)
+{
+    *result = "";
+    (*result).concat("{\"status\":\"");
+    switch(status)
+    {
+        case DEVICE_STATUS_NOT_READY:
+            (*result).concat("not-ready");
+            break;
+        case DEVICE_STATUS_READY:
+            (*result).concat("ready");
+            break;
+        default:
+            *result = "";
+            return;
+            break;
+    }
+    (*result).concat("\"}");
+}
 
 
 void Pin::enable() {

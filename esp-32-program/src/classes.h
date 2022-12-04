@@ -18,6 +18,7 @@ class Device
   int getStatus();
   void initPins(); // Creates pin object for every available pinNumber
   int getFireTime();
+  void getStatusString(String *result);
   Pin *getPin(int pinNumber); // Gets a pin pointer by the pinNumber
   std::vector<Pin*> *getPins();
   std::vector<int> *getAvailablePinNumbers();
