@@ -120,8 +120,8 @@ void Pin::getStatusString(String *result) {
     *result = "";
     (*result).concat("{\"pinNumber\":\"");
     (*result).concat(String(number));
-    (*result).concat("\",\"status\":");
-    switch(number)
+    (*result).concat("\",\"status\":\"");
+    switch(status)
     {
         case PIN_STATUS_DISABLED:
             (*result).concat("disabled");
