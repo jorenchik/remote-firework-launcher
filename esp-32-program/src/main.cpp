@@ -106,6 +106,17 @@ void handleGetDeviceStatus() {
   server.send(200, "text/plain", "{\"status\":\"" + deviceStatusStr + "\"}");
   return;
 }
+
+void handleGetPinStatus() {
+  String pinNumberStr = server.pathArg(0), response;
+  Pin *pin;
+  pin = getPinByNumber(pinNumberStr);
+  if(!pin)
+  {
+    return;
+  }
+  pin->getStatusString(&response);
+  server.send(200, "text/plain", response);
 }
 
 void handleGetPinsStatus() {
