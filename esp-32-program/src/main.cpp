@@ -34,7 +34,7 @@ void setup(void) {
   server.on(UriBraces("/device/status"), handleGetDeviceStatus);
   server.on(UriBraces("/pin/status/{}"), handleGetPinStatus);
   server.on(UriBraces("/device/pins/status"), handleGetPinsStatus);
-  server.on(UriBraces("/device/set-defaults"), handleResetDeviceConfig);
+  server.on(UriBraces("/device/reset"), handleResetDevice);
   server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
   server.on(UriBraces("/pin/disable/{}"), handlePinDisable);
   server.on(UriBraces("/pin/fire/{}"), handlePinFire);
@@ -176,8 +176,30 @@ void handlePinFire() {
   server.send(200, "text/plain", response);
 }
 
-void handleResetDeviceConfig() {
-  server.send(200, "text/plain", "{\"message\": \"Device has been successfully reset\"}");
+void handleResetDevice() {
+  String response;
+  response.concat("{\"enabledPins\": [");
+  std::vector<Pin*> *devicePins = device->getPins();
+  std::vector<Pin*>::iterator devicePinsIterator = devicePins->begin();
+  while(devicePinsIterator != devicePins->end())
+  {
+    String pinStatusString = "";
+    (*devicePinsIterator)->disable();
+    (*devicePinsIterator)->getStatusString(&pinStatusString);
+    if(pinStatusString == "")
+    {
+      sendInternalServerError();
+      return;
+    }
+    if(devicePinsIterator - devicePins->begin() != 0)
+    {
+      response.concat(",");
+    }
+    response.concat(pinStatusString);
+    devicePinsIterator++;
+  }
+  response.concat("]}");
+  server.send(200, "text/plain", response);
 }
 
 void handleNotFound() {
