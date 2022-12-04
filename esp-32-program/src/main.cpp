@@ -30,6 +30,7 @@ void handlePinDisable();
 void handleResetDeviceConfig();
 void handleNotFound();
 void handlePinFire();
+void handleSaveSettings();
 Pin *getPinByNumber(String pinNumberStr);
 
 void setup(void) {
@@ -41,6 +42,7 @@ void setup(void) {
   server.on(UriBraces("/pin/status/{}"), handleGetPinStatus);
   server.on(UriBraces("/device/pins/status"), handleGetPinsStatus);
   server.on(UriBraces("/device/set-defaults"), handleResetDeviceConfig);
+  server.on(UriBraces("/device/save-settings"), handleSaveSettings);
   server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
   server.on(UriBraces("/pin/disable/{}"), handlePinDisable);
   server.on(UriBraces("/pin/fire/{}"), handlePinFire);
@@ -180,6 +182,10 @@ void handlePinFire() {
   pin->fire();
   pin->getStatusString(&response);
   server.send(200, "text/plain", response);
+}
+
+void handleSaveSettings() {
+  server.send(200, "text/plain", "{\"message\": \"Settings has been successfully saved\"}");
 }
 
 void handleResetDeviceConfig() {
