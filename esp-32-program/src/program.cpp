@@ -115,6 +115,31 @@ void Pin::fire() {
     status = PIN_STATUS_FIRED;
 }
 int Pin::getStatus() {return status;}
+
+void Pin::getStatusString(String *result) {
+    *result = "";
+    (*result).concat("{\"pinNumber\":\"");
+    (*result).concat(String(number));
+    (*result).concat("\",\"status\":");
+    switch(number)
+    {
+        case PIN_STATUS_DISABLED:
+            (*result).concat("disabled");
+            break;
+        case PIN_STATUS_ENABLED:
+            (*result).concat("enabled");
+            break;
+        case PIN_STATUS_FIRED:
+            (*result).concat("fired");
+            break;
+        default:
+            *result = ""; 
+            return;
+            break;
+    }
+    (*result).concat("\"}");
+}
+
 Device *Pin::getDevice() {return device;}
 Pin::Pin(int pinNumber, Device *dev) {
     status = PIN_STATUS_DISABLED;
