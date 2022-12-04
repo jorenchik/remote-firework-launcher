@@ -29,6 +29,7 @@ void handlePinEnable();
 void handlePinDisable();
 void handleResetDeviceConfig();
 void handleNotFound();
+void handlePinFire();
 Pin *getPinByNumber(String pinNumberStr);
 
 void setup(void) {
@@ -42,6 +43,7 @@ void setup(void) {
   server.on(UriBraces("/device/set-defaults"), handleResetDeviceConfig);
   server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
   server.on(UriBraces("/pin/disable/{}"), handlePinDisable);
+  server.on(UriBraces("/pin/fire/{}"), handlePinFire);
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("HTTP server started");
@@ -163,6 +165,19 @@ void handlePinDisable() {
     return;
   }
   pin->disable();
+  pin->getStatusString(&response);
+  server.send(200, "text/plain", response);
+}
+
+void handlePinFire() {
+  String pinNumberStr = server.pathArg(0), response;
+  Pin *pin;
+  pin = getPinByNumber(pinNumberStr);
+  if(!pin)
+  {
+    return;
+  }
+  pin->fire();
   pin->getStatusString(&response);
   server.send(200, "text/plain", response);
 }
