@@ -34,7 +34,7 @@ void setup(void) {
   server.on(UriBraces("/device/status"), handleGetDeviceStatus);
   server.on(UriBraces("/pin/status/{}"), handleGetPinStatus);
   server.on(UriBraces("/device/pins/status"), handleGetPinsStatus);
-  server.on(UriBraces("/device/reset"), handleResetDevice);
+  server.on(UriBraces("/device/reset"), handleResetDeviceConfig);
   server.on(UriBraces("/pin/enable/{}"), handlePinEnable);
   server.on(UriBraces("/pin/disable/{}"), handlePinDisable);
   server.on(UriBraces("/pin/fire/{}"), handlePinFire);
@@ -176,7 +176,7 @@ void handlePinFire() {
   server.send(200, "text/plain", response);
 }
 
-void handleResetDevice() {
+void handleResetDeviceConfig() {
   String response;
   response.concat("{\"enabledPins\": [");
   std::vector<Pin*> *devicePins = device->getPins();
