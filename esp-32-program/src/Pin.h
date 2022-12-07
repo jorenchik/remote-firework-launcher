@@ -1,4 +1,3 @@
-class Device;
 class Pin
 {
   int status;

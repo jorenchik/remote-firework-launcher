@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "Device.h"
 #include "Pin.h"
 
 #define PIN_STATUS_DISABLED 0

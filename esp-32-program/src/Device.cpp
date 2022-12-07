@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <vector>
 #include "Device.h"
+#include "Pin.h"
 
 #define DEVICE_STATUS_NOT_READY 0
 #define DEVICE_STATUS_READY 1
