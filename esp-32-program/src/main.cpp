@@ -32,7 +32,7 @@ Pin *getPinByNumber(String pinNumberStr);
 
 void setup(void) {
   Serial.begin(115200);
-  device = new Device(DEVICE_WIFI_MODE_STATION);
+  device = new Device(DEVICE_WIFI_MODE_STATION, DEVICE_ENVIRONMENT_DEVELOPMENT);
   device->setupWifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
 
   server.on(UriBraces("/device/status"), handleGetDeviceStatus);

@@ -15,9 +15,10 @@
 
 #define DEVICE_FIRETIME 2000
 
-Device::Device(int mode) {
+Device::Device(int mode, int environment_) {
     status = DEVICE_STATUS_NOT_READY;
     fireTime = DEVICE_FIRETIME;
+    environment = environment_;
     wifiMode = mode;
     this->initPins();
 }
@@ -55,6 +56,7 @@ void Device::setupWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
     status = DEVICE_STATUS_READY;
 }
 int Device::getStatus() {return status;}
+int Device::getEnvironment() {return environment;};
 int Device::getFireTime() {return fireTime;}
 void Device::initPins() {
     std::vector<int>::iterator pinNumPtr = availablePinNumbers.begin();
