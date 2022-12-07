@@ -29,28 +29,47 @@ void Device::setupWifi(char *wifiSsid, char *wifiPassword, int wifiChannel)
 {
     if (wifiMode == DEVICE_WIFI_MODE_SOFT_AP)
     {
+        if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.print("Setting AP (Access Point)…");
+        }
         WiFi.softAP(wifiSsid, wifiPassword, wifiChannel);
         IPAddress IP = WiFi.softAPIP();
+        if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.print("AP IP address: ");
         Serial.println(IP);
+        }
     }
     else if (wifiMode == DEVICE_WIFI_MODE_STATION)
     {
         WiFi.begin(wifiSsid,wifiPassword,wifiChannel);
+        if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.print("Connecting to WiFi ");
         Serial.print(wifiSsid);
-        while (WiFi.status() != WL_CONNECTED) {
-        delay(100);
-        Serial.print(".");
         }
+        while (WiFi.status() != WL_CONNECTED)
+        {
+            delay(100);
+            if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+            {
+                Serial.print(".");
+            }
+        }
+        if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.println(" Connected!");
         Serial.print("IP address: ");
         Serial.println(WiFi.localIP());
+        }
     } else
     {
+        if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.println("Failed to setup WiFi: invalid WiFi mode.");
         Serial.println("Halting the setup...");
+        }
         exit(0);  
     }
     status = DEVICE_STATUS_READY;
@@ -66,6 +85,10 @@ void Device::initPins() {
         pinMode(*pinNumPtr, OUTPUT);
         this->pins.push_back(newPinPtr);
         pinNumPtr++;
+    }
+    if (environment == DEVICE_ENVIRONMENT_DEVELOPMENT || environment == DEVICE_ENVIRONMENT_TESTING)
+    {
+        Serial.println("Pins has been initialized");
     }
 }
 Pin *Device::getPin(int pinNumber)

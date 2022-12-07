@@ -11,32 +11,72 @@
 #define DEVICE_ENVIRONMENT_TESTING 3
 
 void Pin::enable() {
+    if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+    {
+        String log = "";
+        log.concat("Pin ");
+        log.concat(number);
+        log.concat(" has been enabled...");
+        Serial.println(log);
+    }
     status = PIN_STATUS_ENABLED;
 }
 void Pin::disable() {
+    if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+    {
+        String log = "";
+        log.concat("Pin ");
+        log.concat(number);
+        log.concat(" has been disabled...");
+        Serial.println(log);
+
+    }
     status = PIN_STATUS_DISABLED;
 }
 void Pin::fire() {
     if(status == PIN_STATUS_DISABLED)
     {
+        if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.println("Cannot fire disabled pin...");
+        }
         return;
     }
     if(status != PIN_STATUS_ENABLED)
     {
+        if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.println("Pin has already been fired...");
+        }
         return;
     }
     if(status != PIN_STATUS_ENABLED)
     {
+        if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+        {
         Serial.println("Invalid pin status - cannot fire...");
+        }
         return;
     }
     int fireTime = device->getFireTime();
     if(!fireTime) return;
+    if (device->getEnvironment() == DEVICE_ENVIRONMENT_PRODUCTION || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+    {
     digitalWrite(number, 1);
+    }
     delay(fireTime);
+    if (device->getEnvironment() == DEVICE_ENVIRONMENT_PRODUCTION || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+    {
     digitalWrite(number, 0);
+    }
+    if (device->getEnvironment() == DEVICE_ENVIRONMENT_DEVELOPMENT || device->getEnvironment() == DEVICE_ENVIRONMENT_TESTING)
+    {
+        String log = "";
+        log.concat("Pin ");
+        log.concat(number);
+        log.concat(" has been fired...");
+        Serial.println(log);
+    }
     status = PIN_STATUS_FIRED;
 }
 int Pin::getStatus() {return status;}
