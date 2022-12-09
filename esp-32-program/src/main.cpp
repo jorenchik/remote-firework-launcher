@@ -16,6 +16,9 @@
 #define DEVICE_ENVIRONMENT_PRODUCTION 2
 #define DEVICE_ENVIRONMENT_TESTING 3
 
+#define CURRENT_ENVIRONMENT 1
+#define CURRENT_WIFI_MODE 2
+
 WebServer server(80);
 Device *device;
 
@@ -32,7 +35,7 @@ Pin *getPinByNumber(String pinNumberStr);
 
 void setup(void) {
   Serial.begin(115200);
-  device = new Device(DEVICE_WIFI_MODE_STATION, DEVICE_ENVIRONMENT_DEVELOPMENT);
+  device = new Device(CURRENT_WIFI_MODE, CURRENT_ENVIRONMENT);
   device->setupWifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
 
   server.on(UriBraces("/device/status"), handleGetDeviceStatus);
