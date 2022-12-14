@@ -121,7 +121,7 @@ void handleGetPinsStatus() {
   // for each pin get status of it
   // make a string of JSON object that will indicate status of every pin
   String response;
-  response.concat("{\"enabledPins\": [");
+  response.concat("{\"pins\": [");
   std::vector<Pin*> *devicePins = device->getPins();
   std::vector<Pin*>::iterator devicePinsIterator = devicePins->begin();
   while(devicePinsIterator != devicePins->end())
