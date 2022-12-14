@@ -5,9 +5,9 @@
     <form @submit.prevent>
       <h2>Select Pins:</h2>
       <div class="pin-selection-container">
-        <div v-for="pin in pins" :key="pin.id" class="pin-selection-item" :class="pin.status">
-            <input type="checkbox"  :id="pin.id" :value="pin.id" v-model="selectedPins" class="checkbox" />
-            <label :for="pin.id" class="label">{{ pin.name }}: {{pin.status}}</label>
+        <div v-for="pin in pins" :key="pin.pinNumber" class="pin-selection-item" :class="pin.status">
+            <input type="checkbox"  :id="pin.pinNumber" :value="pin.pinNumber" v-model="selectedPins" class="checkbox" />
+            <label :for="pin.id" class="label">{{`Pin: ${pin.pinNumber} : ${pin.status}`}}</label>
         </div>
       </div>
     
@@ -24,11 +24,13 @@
 import { computed } from '@vue/reactivity';
 import data from '../assets/data/db'
 
+
+
 export default {
   name: 'PinToggle',
   data() {
     return {
-      pins: data.getUserData(), //gets the pins froom db.js faila
+      pins: data.getPins(), //gets the pins froom db.js faila
       selectedPins: []
     };
   },
@@ -36,7 +38,6 @@ export default {
     enableSelectedPins() {
       data.setPinStatus(this.selectedPins,'enabled')
       this.$forceUpdate()
-      
     },
     disableSelectedPins() {
       data.setPinStatus(this.selectedPins,'disabled')

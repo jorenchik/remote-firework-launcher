@@ -3,9 +3,9 @@
         <div v-if="pins.length">
             <h2>Select Pins:</h2>
             <div class="pin-selection-container">
-                <div v-for="pin in pins" :key="pin.id" class="pin-selection-item" :class="pin.status">
-                    <input type="checkbox"  :id="pin.id" :value="pin.id" v-model="selectedPins" class="checkbox" />
-                    <label :for="pin.id" class="label">{{ pin.name }}: {{pin.status}}</label>
+                <div v-for="pin in pins" :key="pin.pinNumber" class="pin-selection-item" :class="pin.status">
+                    <input type="radio"  :id="pin.pinNumber" :value="pin.pinNumber" v-model="selectedPin" class="radio" />
+                    <label :for="pin.id" class="label">{{`Pin: ${pin.pinNumber} : ${pin.status}`}}</label>
                 </div>
             </div>
             <button @click="fireSelectedPins" class="button">Fire selected pins</button>
@@ -28,12 +28,12 @@ export default {
     data(){
         return {
             pins: data.getEnabledPins(), //gets the pins froom db.js faila
-            selectedPins: []
+            selectedPin: null
         }
     },
     methods: {
         fireSelectedPins() {
-            data.setPinStatus(this.selectedPins,'fired')
+            data.setPinStatus([this.selectedPin],'fired')
             this.$forceUpdate()
         },
     }
