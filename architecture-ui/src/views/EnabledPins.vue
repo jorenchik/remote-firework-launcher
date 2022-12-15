@@ -40,8 +40,3 @@ export default {
 
 }
 </script>
-<style>
-.error{
-    width: 400px;
-}
-</style>
