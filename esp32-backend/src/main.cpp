@@ -4,10 +4,9 @@
 #include <uri/UriBraces.h>
 #include "Device.h"
 #include "Pin.h"
+#include "Config.h"
 
-#define WIFI_SSID "Wokwi-GUEST"
-#define WIFI_PASSWORD ""
-#define WIFI_CHANNEL 6
+/* Defines device configuration constants, do not modify */
 
 #define DEVICE_WIFI_MODE_SOFT_AP 1
 #define DEVICE_WIFI_MODE_STATION 2
@@ -16,8 +15,6 @@
 #define DEVICE_ENVIRONMENT_PRODUCTION 2
 #define DEVICE_ENVIRONMENT_TESTING 3
 
-#define CURRENT_ENVIRONMENT 1
-#define CURRENT_WIFI_MODE 2
 
 WebServer server(80);
 Device *device;
