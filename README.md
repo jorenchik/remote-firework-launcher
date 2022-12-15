@@ -1,2 +1,5 @@
-architecture-ui - VUE tīmekļa lietujumprogramma kontrolei.
-esp-32-program - ESP32 programma ar Web serveri (REST API).
+# README
+## ESP32 backend
+ESP32 backend - REST API Web server working as a Soft AP or station. API documentation can be obtained here [Postman API docs](https://documenter.getpostman.com/view/16964968/2s8YzMXkBM).
+## Vue frontend
+Front end ESP32 control application developed with Vue library.
