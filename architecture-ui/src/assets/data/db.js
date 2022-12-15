@@ -58,50 +58,128 @@ let storedData = {
     }
 }
 
-// console.log(process.env.VUE_APP_ESP_CONNECTION);
-
 const dataStore = {
-    setPinStatus(pinNumbers, status){
+    xhttpRequests: [],
+    setPinStatus(pinNumbers, status, updatePinComponent){
         if(status == 'enabled') {
-            this.enableSelectedPins(pinNumbers)
+            this.enableSelectedPins(pinNumbers, updatePinComponent)
         }
         else if(status == 'disabled'){
-            this.disableSelectedPins(pinNumbers)
+            this.disableSelectedPins(pinNumbers, updatePinComponent)
         }
         else if(status == 'fired'){
-            this.fireSelectedPins(pinNumbers)
+            this.fireSelectedPins(pinNumbers, updatePinComponent)
         }
     },
 
 
-    enableSelectedPins(pinNumbers) {
+    enableSelectedPins(pinNumbers, updatePinComponent) {
         pinNumbers.forEach((pinNumber) => {
             storedData.pins.forEach((pinObject) =>{
                 if (pinObject.status !== 'enabled' && pinObject.pinNumber === pinNumber){
-                    pinObject.status = 'enabled'
+                    const url = new URL(`/pin/enable/${pinNumber}`, 'http://192.168.4.1')
+                    let remoteOperationSucceed = true
+                    let requestIndex = this.xhttpRequests.push(new XMLHttpRequest('GET', url, true))
+                    requestIndex = requestIndex - 1
+                    this.xhttpRequests[requestIndex].open('GET', url, true)
+                    this.xhttpRequests[requestIndex].addEventListener('load', () =>{
+                        const responseText =  this.xhttpRequests[requestIndex].responseText
+                        const responseObject = JSON.parse(responseText) 
+                        if (!('pinNumber' in responseObject) || !('status' in responseObject) || !(responseObject.pinNumber === pinNumber) || !(responseObject.status === "enabled"))
+                        {
+                            remoteOperationSucceed = false
+                        }
+                        if (remoteOperationSucceed)
+                        {
+                            pinObject.status = 'enabled'
+                            updatePinComponent()
+                        }
+                    })
+                    this.xhttpRequests[requestIndex].send()
                 }
             })
         })
     },
 
-    disableSelectedPins(pinNumbers) {
+    disableSelectedPins(pinNumbers, updatePinComponent) {
         pinNumbers.forEach((pinNumber) => {
             storedData.pins.forEach((pinObject) =>{
                 if (pinObject.status !== 'disabled' && pinObject.pinNumber === pinNumber){
-                    pinObject.status = 'disabled'
+                    const url = new URL(`/pin/disable/${pinNumber}`, 'http://192.168.4.1')
+                    let remoteOperationSucceed = true
+                    let requestIndex = this.xhttpRequests.push(new XMLHttpRequest('GET', url, true))
+                    requestIndex = requestIndex - 1
+                    this.xhttpRequests[requestIndex].open('GET', url, true)
+                    this.xhttpRequests[requestIndex].addEventListener('load', () =>{
+                        const responseText =  this.xhttpRequests[requestIndex].responseText
+                        const responseObject = JSON.parse(responseText) 
+                        if (!('pinNumber' in responseObject) || !('status' in responseObject) || !(responseObject.pinNumber === pinNumber) || !(responseObject.status === "disabled"))
+                        {
+                            remoteOperationSucceed = false
+                        }
+                        if (remoteOperationSucceed)
+                        {
+                            pinObject.status = 'disabled'
+                            updatePinComponent()
+
+                        }
+                        
+                    })
+                    this.xhttpRequests[requestIndex].send()
                 }
             })
         })
     },
-    fireSelectedPins(pinNumbers) {
+    
+    fireSelectedPins(pinNumbers, updatePinComponent) {
         pinNumbers.forEach((pinNumber) => {
             storedData.pins.forEach((pinObject) =>{
-                if (pinObject.status !== 'fired' && pinObject.pinNumber === pinNumber){
-                    pinObject.status = 'fired'
+                if (pinObject.status !== 'fired' && pinObject.status !== 'disabled' && pinObject.pinNumber === pinNumber){
+                    const url = new URL(`/pin/fire/${pinNumber}`, 'http://192.168.4.1')
+                    let remoteOperationSucceed = true
+                    let requestIndex = this.xhttpRequests.push(new XMLHttpRequest('GET', url, true))
+                    requestIndex = requestIndex - 1
+                    this.xhttpRequests[requestIndex].open('GET', url, true)
+                    this.xhttpRequests[requestIndex].addEventListener('load', () =>{
+                        const responseText =  this.xhttpRequests[requestIndex].responseText
+                        const responseObject = JSON.parse(responseText) 
+                        if (!('pinNumber' in responseObject) || !('status' in responseObject) || !(responseObject.pinNumber === pinNumber) || !(responseObject.status === "fired"))
+                        {
+                            remoteOperationSucceed = false
+                        }
+                        if (remoteOperationSucceed)
+                        {
+                            pinObject.status = 'fired'
+                            updatePinComponent()
+                        }
+                    })
+                    this.xhttpRequests[requestIndex].send()
                 }
             })
         })
     },
+
+    fetchPinCurrentStatus(updatePinComponent) {
+        const url = new URL(`/device/pins/status`, 'http://192.168.4.1')
+        let requestIndex = this.xhttpRequests.push(new XMLHttpRequest('GET', url, true))
+        requestIndex = requestIndex - 1
+        this.xhttpRequests[requestIndex].open('GET', url, true)
+        this.xhttpRequests[requestIndex].addEventListener('load', () =>{
+            const responseText =  this.xhttpRequests[requestIndex].responseText
+            const responseObject = JSON.parse(responseText)
+            const updatedPins = responseObject.pins
+            updatedPins.forEach((updatedPin) => {
+                storedData.pins.forEach((pinObject) =>{
+                    if (pinObject.pinNumber === updatedPin.pinNumber && pinObject.status !== updatedPin.status) {
+                        pinObject.status = updatedPin.status
+                    }
+                })
+            }) 
+            updatePinComponent()
+        })
+        this.xhttpRequests[requestIndex].send()
+    },
+
     getEnabledPins(){
         return storedData.pins.filter((pin) => pin.status == 'enabled')
     },

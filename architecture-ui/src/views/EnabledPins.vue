@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent>
+    <form class="pin-form" @submit.prevent>
         <div v-if="pins.length">
             <h2>Select Pins:</h2>
             <div class="pin-selection-container">
@@ -8,15 +8,13 @@
                     <label :for="pin.id" class="label">{{`Pin: ${pin.pinNumber} : ${pin.status}`}}</label>
                 </div>
             </div>
+            <button @click="updatePinsStatus" class="button enabled">Update Pins' Status</button>
             <button @click="fireSelectedPins" class="button">Fire selected pins</button>
         </div>
         <div v-else class="error">
+            <button @click="updatePinsStatus" class="button enabled">Update Pins' Status</button>
             <h2>Unable to display any pins since no pins have been enabled</h2>
         </div>
-    
-
-
-
     </form>
 </template>
 <script>
@@ -33,8 +31,17 @@ export default {
     },
     methods: {
         fireSelectedPins() {
-            data.setPinStatus([this.selectedPin],'fired')
+            data.setPinStatus([this.selectedPin],'fired',  () => {
+                this.$forceUpdate()
+            })
             this.$forceUpdate()
+        },
+        updatePinsStatus() {
+            data.fetchPinCurrentStatus(() => {
+                this.$forceUpdate()
+                this.pins = data.getEnabledPins()
+                this.$forceUpdate()
+            })
         },
     }
 
