@@ -38,6 +38,7 @@ void setup(void) {
   device = new Device(CURRENT_WIFI_MODE, CURRENT_ENVIRONMENT);
   device->setupWifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
 
+  server.enableCORS();
   server.on(UriBraces("/device/status"), handleGetDeviceStatus);
   server.on(UriBraces("/pin/status/{}"), handleGetPinStatus);
   server.on(UriBraces("/device/pins/status"), handleGetPinsStatus);
