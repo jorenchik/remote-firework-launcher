@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
+  <div class="component-container">
     <div>
       <h1>Home</h1>
       <p>Welcome to the ESP32 remote control app!</p>
-      <input v-model="ipAddress">
-      <input type="button" @click="establishConnection" value="Submit">
+      <input class="text-input" v-model="ipAddress">
+      <input type="button" class="button enable" @click="establishConnection" value="Submit">
       <p v-if="!addressValidated">Invalid ip address...</p>
     </div>
   </div>
@@ -28,6 +28,7 @@ export default {
         this.addressValidated = false
       } else {
         this.addressValidated = true
+        data.setDeviceIpAddress(this.ipAddress)
       }
       this.$forceUpdate()
       return;

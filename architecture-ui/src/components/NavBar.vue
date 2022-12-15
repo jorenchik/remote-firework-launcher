@@ -1,8 +1,8 @@
 <template>
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link v-if="device.status == 'connected'" :to="{name: 'PinToggle'}">Toggle pins</router-link>
-      <router-link v-if="device.status == 'connected'" :to="{name: 'enabled'}">Enabled pins</router-link>
+      <router-link :to="{name: 'PinToggle'}">Toggle pins</router-link>
+      <router-link :to="{name: 'enabled'}">Enabled pins</router-link>
     </nav>
 </template>
 <script>

@@ -1,21 +1,28 @@
 <template>
-    <form class="pin-form" @submit.prevent>
-        <div v-if="pins.length">
-            <h2>Select Pins:</h2>
-            <div class="pin-selection-container">
-                <div v-for="pin in pins" :key="pin.pinNumber" class="pin-selection-item" :class="pin.status">
-                    <input type="radio"  :id="pin.pinNumber" :value="pin.pinNumber" v-model="selectedPin" class="radio" />
-                    <label :for="pin.id" class="label">{{`Pin: ${pin.pinNumber} : ${pin.status}`}}</label>
+    <div class="component-container">
+        <div class="form-container">
+            <form @submit.prevent>
+                <div style="width:100%;" v-if="pins.length && remoteDevice.status === 'connected'">
+                    <h2>Select Pins:</h2>
+                    <div class="pin-selection-container">
+                        <div v-for="pin in pins" :key="pin.pinNumber" class="pin-selection-item" :class="pin.status">
+                            <input type="radio"  :id="pin.pinNumber" :value="pin.pinNumber" v-model="selectedPin" class="radio" />
+                            <label :for="pin.id" class="label">{{`Pin: ${pin.pinNumber} : ${pin.status}`}}</label>
+                        </div>
+                    </div>
+                <button @click="updatePinsStatus" class="button neutral">Update Pins' Status</button>
+                    <button @click="fireSelectedPins" class="button">Fire selected pins</button>
                 </div>
-            </div>
-            <button @click="updatePinsStatus" class="button enabled">Update Pins' Status</button>
-            <button @click="fireSelectedPins" class="button">Fire selected pins</button>
+                <div v-if="pins.length <= 0 && remoteDevice.status === 'connected'" class="error">
+                    <h2>Unable to display any pins. No pins have been enabled.</h2>
+                    <button @click="updatePinsStatus" class="button enabled">Update Pins' Status</button>
+                </div>
+                <div v-if="remoteDevice.status !== 'connected'" class="error">
+                    <h2>Unable to display any pins. Device is not connected.</h2>
+                </div>
+            </form>
         </div>
-        <div v-else class="error">
-            <button @click="updatePinsStatus" class="button enabled">Update Pins' Status</button>
-            <h2>Unable to display any pins since no pins have been enabled</h2>
-        </div>
-    </form>
+    </div>
 </template>
 <script>
 import data from '../assets/data/db'
@@ -26,6 +33,7 @@ export default {
     data(){
         return {
             pins: data.getEnabledPins(), //gets the pins froom db.js faila
+            remoteDevice: data.getDevice(),
             selectedPin: null
         }
     },

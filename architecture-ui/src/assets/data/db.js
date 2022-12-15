@@ -1,5 +1,5 @@
 let storedData = {
-    'remonteDevice': {
+    'remoteDevice': {
         'status': 'not-connected',
         'ipAddress': null
     },
@@ -184,6 +184,36 @@ const dataStore = {
         this.xhttpRequests[requestIndex].send()
     },
 
+    setDeviceIpAddress(ipAddress) {
+        storedData.remoteDevice.ipAddress = ipAddress;
+        // storedData.remoteDevice.status = 'connected';
+        this.fetchDeviceStatus()
+    },
+    fetchDeviceStatus() {
+        const ipAddress = storedData.remoteDevice.ipAddress;
+        let remoteOperationSucceed = true
+        // 192.168.4.1
+        if(!ipAddress) {
+            return
+        }
+        const url = new URL(`/device/status`, 'http://192.168.4.1')
+        let requestIndex = this.xhttpRequests.push(new XMLHttpRequest('GET', url, true))
+        requestIndex = requestIndex - 1
+        this.xhttpRequests[requestIndex].open('GET', url, true)
+        this.xhttpRequests[requestIndex].addEventListener('load', () =>{
+            const responseText =  this.xhttpRequests[requestIndex].responseText
+            const responseObject = JSON.parse(responseText)
+            if(!responseObject || !('status' in responseObject) || !(responseObject.status === 'ready'))
+            {
+                remoteOperationSucceed = false
+            }
+            if (remoteOperationSucceed)
+            {
+                storedData.remoteDevice.status = 'connected'
+            }
+        })
+        this.xhttpRequests[requestIndex].send()
+    },
     getEnabledPins(){
         return storedData.pins.filter((pin) => pin.status == 'enabled')
     },
@@ -191,7 +221,7 @@ const dataStore = {
         return storedData.pins
     },
     getDevice() {
-        return storedData.device;
+        return storedData.remoteDevice;
     } 
 }
 export default dataStore
