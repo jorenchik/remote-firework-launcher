@@ -25,6 +25,11 @@ export default {
     color: #7353ba;
     background: #23001E; 
   }
+  .component-container {
+    display: flex;
+    width: 100%;
+    place-content: center;
+  }
   /* Navbar */
   nav {
     padding: 30px;
@@ -36,13 +41,20 @@ export default {
   nav a.router-link-exact-active {
     color: #42b983;
   }
+  
+  /* Form */
   form {
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
   }
-
-  /* Form */
+  .form-container {
+    display: flex;
+    place-items: center;
+    place-content: center;
+    width: 80%;
+  }
   label {
     font-weight: bold;
   }
@@ -51,7 +63,6 @@ export default {
     align-items: center;
     display: flex;
     background: #8F6593;
-    width: 80%;
     padding: 20px;
     border-radius: 20px;
     margin-bottom: 10px;
@@ -68,6 +79,9 @@ export default {
     margin-bottom: 10px;
     background-color: #8F6593;
     width: 90%;
+  }
+  .text-input {
+    margin-bottom: 0.5rem;
   }
   .button {
     background-color: #008577;
@@ -90,6 +104,10 @@ export default {
       width: 400px;
   }
   /* Buttons */
+  .neutral {
+    background: #4f8f72;
+    color: black;
+  }
   .enabled{
     background: #42b983;
     color: black;
