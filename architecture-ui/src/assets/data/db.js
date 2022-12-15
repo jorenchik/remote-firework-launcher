@@ -1,4 +1,8 @@
 let storedData = {
+    'remonteDevice': {
+        'status': 'not-connected',
+        'ipAddress': null
+    },
     'pins': [
         {
             "pinNumber": "13",
@@ -185,6 +189,9 @@ const dataStore = {
     },
     getPins() {
         return storedData.pins
-    }
+    },
+    getDevice() {
+        return storedData.device;
+    } 
 }
 export default dataStore
