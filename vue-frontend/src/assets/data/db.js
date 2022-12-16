@@ -184,12 +184,15 @@ const dataStore = {
         this.xhttpRequests[requestIndex].send()
     },
 
-    setDeviceIpAddress(ipAddress) {
+    setDeviceIpAddress(ipAddress, updateComponent) {
         storedData.remoteDevice.ipAddress = ipAddress;
-        // storedData.remoteDevice.status = 'connected';
-        this.fetchDeviceStatus()
+        this.fetchDeviceStatus(updateComponent)
     },
-    fetchDeviceStatus() {
+    disconnectDevice() {
+        storedData.remoteDevice.status = 'not-connected'
+        storedData.remoteDevice.ipAddress = null
+    },
+    fetchDeviceStatus(updateComponent) {
         const ipAddress = storedData.remoteDevice.ipAddress;
         let remoteOperationSucceed = true
         // 192.168.4.1
@@ -210,6 +213,7 @@ const dataStore = {
             if (remoteOperationSucceed)
             {
                 storedData.remoteDevice.status = 'connected'
+                updateComponent()
             }
         })
         this.xhttpRequests[requestIndex].send()
