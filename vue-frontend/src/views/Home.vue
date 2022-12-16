@@ -30,7 +30,6 @@ export default {
       {
         return;
       }
-      console.log('here');
       const ipAddressValidateRegEx = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/
       if(!this.ipAddress.match(ipAddressValidateRegEx)) {
         this.addressValidated = false
